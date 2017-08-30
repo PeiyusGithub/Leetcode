@@ -1,11 +1,19 @@
-class Solution {
-    public int[] countBits(int num) {
-        int[] ans = new int[num + 1];
-        int offset = 1;
-        for (int i = 1; i < num + 1; i++) {
-            if (offset * 2 == i) offset *= 2;
-            ans[i] = ans[i - offset] + 1; 
-        }
-        return ans;
-    }
-}
+ public int kthSmallest(TreeNode root, int k) {
+     Stack<TreeNode> stack = new Stack<TreeNode>();
+     TreeNode p = root;
+     int count = 0;
+     
+     while(!stack.isEmpty() || p != null) {
+         if(p != null) {
+             stack.push(p);  // Just like recursion
+             p = p.left;   
+             
+         } else {
+            TreeNode node = stack.pop();
+            if(++count == k) return node.val; 
+            p = node.right;
+         }
+     }
+     
+     return Integer.MIN_VALUE;
+ }

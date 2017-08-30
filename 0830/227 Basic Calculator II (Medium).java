@@ -1,27 +1,36 @@
 public class Solution {
-    public int[] singleNumber(int[] nums) {
-        // Pass 1 : 
-        // Get the XOR of the two numbers we need to find
-        int diff = 0;
-        for (int num : nums) {
-            diff ^= num;
+public int calculate(String s) {
+    int len;
+    if(s==null || (len = s.length())==0) return 0;
+    Stack<Integer> stack = new Stack<Integer>();
+    int num = 0;
+    char sign = '+';
+    for(int i=0;i<len;i++){
+        if(Character.isDigit(s.charAt(i))){
+            num = num*10+s.charAt(i)-'0';
         }
-        // Get its last set bit
-        diff &= -diff;
-        
-        // Pass 2 :
-        int[] rets = {0, 0}; // this array stores the two numbers we will return
-        for (int num : nums)
-        {
-            if ((num & diff) == 0) // the bit is not set
-            {
-                rets[0] ^= num;
+        if((!Character.isDigit(s.charAt(i)) &&' '!=s.charAt(i)) || i==len-1){
+            if(sign=='-'){
+                stack.push(-num);
             }
-            else // the bit is set
-            {
-                rets[1] ^= num;
+            if(sign=='+'){
+                stack.push(num);
             }
+            if(sign=='*'){
+                stack.push(stack.pop()*num);
+            }
+            if(sign=='/'){
+                stack.push(stack.pop()/num);
+            }
+            sign = s.charAt(i);
+            num = 0;
         }
-        return rets;
     }
+
+    int re = 0;
+    for(int i:stack){
+        re += i;
+    }
+    return re;
+}
 }

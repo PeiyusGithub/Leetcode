@@ -1,17 +1,13 @@
-public int findMaxForm(String[] strs, int m, int n) {
-    int[][] dp = new int[m+1][n+1];
-    for (String s : strs) {
-        int[] count = count(s);
-        for (int i=m;i>=count[0];i--) 
-            for (int j=n;j>=count[1];j--) 
-                dp[i][j] = Math.max(1 + dp[i-count[0]][j-count[1]], dp[i][j]);
-    }
-    return dp[m][n];
+public int maxSubArray(int[] A) {
+        int n = A.length;
+        int[] dp = new int[n];//dp[i] means the maximum subarray ending with A[i];
+        dp[0] = A[0];
+        int max = dp[0];
+        
+        for(int i = 1; i < n; i++){
+            dp[i] = A[i] + (dp[i - 1] > 0 ? dp[i - 1] : 0);
+            max = Math.max(max, dp[i]);
+        }
+        
+        return max;
 }
-    
-public int[] count(String str) {
-    int[] res = new int[2];
-    for (int i=0;i<str.length();i++)
-        res[str.charAt(i) - '0']++;
-    return res;
- }
